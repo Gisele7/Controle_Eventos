@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_CONTROLE_EVENTOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ALUNOS">
+          <Key>
+            <PropertyRef Name="ALCodigo" />
+          </Key>
+          <Property Name="ALCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ALNome" Type="varchar(max)" Nullable="false" />
+          <Property Name="ALMatricula" Type="int" Nullable="false" />
+          <Property Name="ALCodCurso" Type="int" />
+        </EntityType>
+        <EntityType Name="CURSOS">
+          <Key>
+            <PropertyRef Name="CSCodigo" />
+          </Key>
+          <Property Name="CSCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CSNome" Type="varchar(max)" Nullable="false" />
+          <Property Name="CSCodEvento" Type="int" />
+          <Property Name="CSCodTipoCurso" Type="int" />
+          <Property Name="CSCodUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="EVENTOS">
+          <Key>
+            <PropertyRef Name="EVCodigo" />
+          </Key>
+          <Property Name="EVCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EVDescricao" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="EVENTOS_CURSOS">
+          <Key>
+            <PropertyRef Name="ECCodEvento" />
+            <PropertyRef Name="ECCodCurso" />
+            <PropertyRef Name="ECCodAluno" />
+          </Key>
+          <Property Name="ECCodEvento" Type="int" Nullable="false" />
+          <Property Name="ECCodCurso" Type="int" Nullable="false" />
+          <Property Name="ECData" Type="datetime" />
+          <Property Name="ECCodAluno" Type="int" Nullable="false" />
+          <Property Name="ECConfirmado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TIPO_CURSO">
+          <Key>
+            <PropertyRef Name="TPCodigo" />
+          </Key>
+          <Property Name="TPCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TPDescricao" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TIPO_USUARIO">
+          <Key>
+            <PropertyRef Name="TUCodigo" />
+          </Key>
+          <Property Name="TUCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TUDescricao" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TURMA">
+          <Key>
+            <PropertyRef Name="TUCodAluno" />
+            <PropertyRef Name="TUCodCurso" />
+          </Key>
+          <Property Name="TUCodAluno" Type="int" Nullable="false" />
+          <Property Name="TUCodCurso" Type="int" Nullable="false" />
+          <Property Name="TUNumeroTurma" Type="int" />
+          <Property Name="TUAno" Type="int" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="USCodigo" />
+          </Key>
+          <Property Name="USCodigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USMatricula" Type="int" Nullable="false" />
+          <Property Name="USNome" Type="varchar(max)" Nullable="false" />
+          <Property Name="USCodTipoUsuario" Type="int" />
+        </EntityType>
+        <Association Name="FK_ALUNOS_CURSOS">
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="0..1" />
+          <End Role="ALUNOS" Type="Self.ALUNOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="ALUNOS">
+              <PropertyRef Name="ALCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_EVENTOS">
+          <End Role="EVENTOS" Type="Self.EVENTOS" Multiplicity="0..1" />
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTOS">
+              <PropertyRef Name="EVCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_TIPO_CURSO">
+          <End Role="TIPO_CURSO" Type="Self.TIPO_CURSO" Multiplicity="0..1" />
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_CURSO">
+              <PropertyRef Name="TPCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodTipoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_USUARIOS">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="0..1" />
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="USCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_ALUNOS">
+          <End Role="ALUNOS" Type="Self.ALUNOS" Multiplicity="1" />
+          <End Role="EVENTOS_CURSOS" Type="Self.EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUNOS">
+              <PropertyRef Name="ALCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_CURSOS">
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EVENTOS_CURSOS" Type="Self.EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_EVENTOS">
+          <End Role="EVENTOS" Type="Self.EVENTOS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EVENTOS_CURSOS" Type="Self.EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTOS">
+              <PropertyRef Name="EVCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TURMA_ALUNOS">
+          <End Role="ALUNOS" Type="Self.ALUNOS" Multiplicity="1" />
+          <End Role="TURMA" Type="Self.TURMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUNOS">
+              <PropertyRef Name="ALCodigo" />
+            </Principal>
+            <Dependent Role="TURMA">
+              <PropertyRef Name="TUCodAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TURMA_CURSOS">
+          <End Role="CURSOS" Type="Self.CURSOS" Multiplicity="1" />
+          <End Role="TURMA" Type="Self.TURMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="TURMA">
+              <PropertyRef Name="TUCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOS_TIPO_USUARIO">
+          <End Role="TIPO_USUARIO" Type="Self.TIPO_USUARIO" Multiplicity="0..1" />
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_USUARIO">
+              <PropertyRef Name="TUCodigo" />
+            </Principal>
+            <Dependent Role="USUARIOS">
+              <PropertyRef Name="USCodTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_CONTROLE_EVENTOSModelStoreContainer">
+          <EntitySet Name="ALUNOS" EntityType="Self.ALUNOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CURSOS" EntityType="Self.CURSOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENTOS" EntityType="Self.EVENTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENTOS_CURSOS" EntityType="Self.EVENTOS_CURSOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPO_CURSO" EntityType="Self.TIPO_CURSO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPO_USUARIO" EntityType="Self.TIPO_USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TURMA" EntityType="Self.TURMA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ALUNOS_CURSOS" Association="Self.FK_ALUNOS_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_EVENTOS" Association="Self.FK_CURSOS_EVENTOS">
+            <End Role="EVENTOS" EntitySet="EVENTOS" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_TIPO_CURSO" Association="Self.FK_CURSOS_TIPO_CURSO">
+            <End Role="TIPO_CURSO" EntitySet="TIPO_CURSO" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_USUARIOS" Association="Self.FK_CURSOS_USUARIOS">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_ALUNOS" Association="Self.FK_EVENTOS_CURSOS_ALUNOS">
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_CURSOS" Association="Self.FK_EVENTOS_CURSOS_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_EVENTOS" Association="Self.FK_EVENTOS_CURSOS_EVENTOS">
+            <End Role="EVENTOS" EntitySet="EVENTOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TURMA_ALUNOS" Association="Self.FK_TURMA_ALUNOS">
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+            <End Role="TURMA" EntitySet="TURMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TURMA_CURSOS" Association="Self.FK_TURMA_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="TURMA" EntitySet="TURMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOS_TIPO_USUARIO" Association="Self.FK_USUARIOS_TIPO_USUARIO">
+            <End Role="TIPO_USUARIO" EntitySet="TIPO_USUARIO" />
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_CONTROLE_EVENTOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CONTROLE_EVENTOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ALUNOS" EntityType="DB_CONTROLE_EVENTOSModel.ALUNOS" />
+          <EntitySet Name="CURSOS" EntityType="DB_CONTROLE_EVENTOSModel.CURSOS" />
+          <EntitySet Name="EVENTOS" EntityType="DB_CONTROLE_EVENTOSModel.EVENTOS" />
+          <EntitySet Name="EVENTOS_CURSOS" EntityType="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS" />
+          <EntitySet Name="sysdiagrams" EntityType="DB_CONTROLE_EVENTOSModel.sysdiagrams" />
+          <EntitySet Name="TIPO_CURSO" EntityType="DB_CONTROLE_EVENTOSModel.TIPO_CURSO" />
+          <EntitySet Name="TIPO_USUARIO" EntityType="DB_CONTROLE_EVENTOSModel.TIPO_USUARIO" />
+          <EntitySet Name="TURMA" EntityType="DB_CONTROLE_EVENTOSModel.TURMA" />
+          <EntitySet Name="USUARIOS" EntityType="DB_CONTROLE_EVENTOSModel.USUARIOS" />
+          <AssociationSet Name="FK_ALUNOS_CURSOS" Association="DB_CONTROLE_EVENTOSModel.FK_ALUNOS_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_ALUNOS" Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_ALUNOS">
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TURMA_ALUNOS" Association="DB_CONTROLE_EVENTOSModel.FK_TURMA_ALUNOS">
+            <End Role="ALUNOS" EntitySet="ALUNOS" />
+            <End Role="TURMA" EntitySet="TURMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_EVENTOS" Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_EVENTOS">
+            <End Role="EVENTOS" EntitySet="EVENTOS" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_TIPO_CURSO" Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_TIPO_CURSO">
+            <End Role="TIPO_CURSO" EntitySet="TIPO_CURSO" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CURSOS_USUARIOS" Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_USUARIOS">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="CURSOS" EntitySet="CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_CURSOS" Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TURMA_CURSOS" Association="DB_CONTROLE_EVENTOSModel.FK_TURMA_CURSOS">
+            <End Role="CURSOS" EntitySet="CURSOS" />
+            <End Role="TURMA" EntitySet="TURMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EVENTOS_CURSOS_EVENTOS" Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_EVENTOS">
+            <End Role="EVENTOS" EntitySet="EVENTOS" />
+            <End Role="EVENTOS_CURSOS" EntitySet="EVENTOS_CURSOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOS_TIPO_USUARIO" Association="DB_CONTROLE_EVENTOSModel.FK_USUARIOS_TIPO_USUARIO">
+            <End Role="TIPO_USUARIO" EntitySet="TIPO_USUARIO" />
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ALUNOS">
+          <Key>
+            <PropertyRef Name="ALCodigo" />
+          </Key>
+          <Property Name="ALCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ALNome" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ALMatricula" Type="Int32" Nullable="false" />
+          <Property Name="ALCodCurso" Type="Int32" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_ALUNOS_CURSOS" FromRole="ALUNOS" ToRole="CURSOS" />
+          <NavigationProperty Name="EVENTOS_CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_ALUNOS" FromRole="ALUNOS" ToRole="EVENTOS_CURSOS" />
+          <NavigationProperty Name="TURMA" Relationship="DB_CONTROLE_EVENTOSModel.FK_TURMA_ALUNOS" FromRole="ALUNOS" ToRole="TURMA" />
+        </EntityType>
+        <EntityType Name="CURSOS">
+          <Key>
+            <PropertyRef Name="CSCodigo" />
+          </Key>
+          <Property Name="CSCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CSNome" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CSCodEvento" Type="Int32" />
+          <Property Name="CSCodTipoCurso" Type="Int32" />
+          <Property Name="CSCodUsuario" Type="Int32" />
+          <NavigationProperty Name="ALUNOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_ALUNOS_CURSOS" FromRole="CURSOS" ToRole="ALUNOS" />
+          <NavigationProperty Name="EVENTOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_EVENTOS" FromRole="CURSOS" ToRole="EVENTOS" />
+          <NavigationProperty Name="TIPO_CURSO" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_TIPO_CURSO" FromRole="CURSOS" ToRole="TIPO_CURSO" />
+          <NavigationProperty Name="USUARIOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_USUARIOS" FromRole="CURSOS" ToRole="USUARIOS" />
+          <NavigationProperty Name="EVENTOS_CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_CURSOS" FromRole="CURSOS" ToRole="EVENTOS_CURSOS" />
+          <NavigationProperty Name="TURMA" Relationship="DB_CONTROLE_EVENTOSModel.FK_TURMA_CURSOS" FromRole="CURSOS" ToRole="TURMA" />
+        </EntityType>
+        <EntityType Name="EVENTOS">
+          <Key>
+            <PropertyRef Name="EVCodigo" />
+          </Key>
+          <Property Name="EVCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EVDescricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_EVENTOS" FromRole="EVENTOS" ToRole="CURSOS" />
+          <NavigationProperty Name="EVENTOS_CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_EVENTOS" FromRole="EVENTOS" ToRole="EVENTOS_CURSOS" />
+        </EntityType>
+        <EntityType Name="EVENTOS_CURSOS">
+          <Key>
+            <PropertyRef Name="ECCodEvento" />
+            <PropertyRef Name="ECCodCurso" />
+            <PropertyRef Name="ECCodAluno" />
+          </Key>
+          <Property Name="ECCodEvento" Type="Int32" Nullable="false" />
+          <Property Name="ECCodCurso" Type="Int32" Nullable="false" />
+          <Property Name="ECData" Type="DateTime" Precision="3" />
+          <Property Name="ECCodAluno" Type="Int32" Nullable="false" />
+          <Property Name="ECConfirmado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ALUNOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_ALUNOS" FromRole="EVENTOS_CURSOS" ToRole="ALUNOS" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_CURSOS" FromRole="EVENTOS_CURSOS" ToRole="CURSOS" />
+          <NavigationProperty Name="EVENTOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_EVENTOS" FromRole="EVENTOS_CURSOS" ToRole="EVENTOS" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TIPO_CURSO">
+          <Key>
+            <PropertyRef Name="TPCodigo" />
+          </Key>
+          <Property Name="TPCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TPDescricao" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_TIPO_CURSO" FromRole="TIPO_CURSO" ToRole="CURSOS" />
+        </EntityType>
+        <EntityType Name="TIPO_USUARIO">
+          <Key>
+            <PropertyRef Name="TUCodigo" />
+          </Key>
+          <Property Name="TUCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TUDescricao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USUARIOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_USUARIOS_TIPO_USUARIO" FromRole="TIPO_USUARIO" ToRole="USUARIOS" />
+        </EntityType>
+        <EntityType Name="TURMA">
+          <Key>
+            <PropertyRef Name="TUCodAluno" />
+            <PropertyRef Name="TUCodCurso" />
+          </Key>
+          <Property Name="TUCodAluno" Type="Int32" Nullable="false" />
+          <Property Name="TUCodCurso" Type="Int32" Nullable="false" />
+          <Property Name="TUNumeroTurma" Type="Int32" />
+          <Property Name="TUAno" Type="Int32" />
+          <NavigationProperty Name="ALUNOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_TURMA_ALUNOS" FromRole="TURMA" ToRole="ALUNOS" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_TURMA_CURSOS" FromRole="TURMA" ToRole="CURSOS" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="USCodigo" />
+          </Key>
+          <Property Name="USCodigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USMatricula" Type="Int32" Nullable="false" />
+          <Property Name="USNome" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="USCodTipoUsuario" Type="Int32" />
+          <NavigationProperty Name="CURSOS" Relationship="DB_CONTROLE_EVENTOSModel.FK_CURSOS_USUARIOS" FromRole="USUARIOS" ToRole="CURSOS" />
+          <NavigationProperty Name="TIPO_USUARIO" Relationship="DB_CONTROLE_EVENTOSModel.FK_USUARIOS_TIPO_USUARIO" FromRole="USUARIOS" ToRole="TIPO_USUARIO" />
+        </EntityType>
+        <Association Name="FK_ALUNOS_CURSOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="0..1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.ALUNOS" Role="ALUNOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="ALUNOS">
+              <PropertyRef Name="ALCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_ALUNOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.ALUNOS" Role="ALUNOS" Multiplicity="1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS" Role="EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUNOS">
+              <PropertyRef Name="ALCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TURMA_ALUNOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.ALUNOS" Role="ALUNOS" Multiplicity="1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.TURMA" Role="TURMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUNOS">
+              <PropertyRef Name="ALCodigo" />
+            </Principal>
+            <Dependent Role="TURMA">
+              <PropertyRef Name="TUCodAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_EVENTOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.EVENTOS" Role="EVENTOS" Multiplicity="0..1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTOS">
+              <PropertyRef Name="EVCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_TIPO_CURSO">
+          <End Type="DB_CONTROLE_EVENTOSModel.TIPO_CURSO" Role="TIPO_CURSO" Multiplicity="0..1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_CURSO">
+              <PropertyRef Name="TPCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodTipoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CURSOS_USUARIOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.USUARIOS" Role="USUARIOS" Multiplicity="0..1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="USCodigo" />
+            </Principal>
+            <Dependent Role="CURSOS">
+              <PropertyRef Name="CSCodUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_CURSOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS" Role="EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TURMA_CURSOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.CURSOS" Role="CURSOS" Multiplicity="1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.TURMA" Role="TURMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSOS">
+              <PropertyRef Name="CSCodigo" />
+            </Principal>
+            <Dependent Role="TURMA">
+              <PropertyRef Name="TUCodCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EVENTOS_CURSOS_EVENTOS">
+          <End Type="DB_CONTROLE_EVENTOSModel.EVENTOS" Role="EVENTOS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS" Role="EVENTOS_CURSOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTOS">
+              <PropertyRef Name="EVCodigo" />
+            </Principal>
+            <Dependent Role="EVENTOS_CURSOS">
+              <PropertyRef Name="ECCodEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOS_TIPO_USUARIO">
+          <End Type="DB_CONTROLE_EVENTOSModel.TIPO_USUARIO" Role="TIPO_USUARIO" Multiplicity="0..1" />
+          <End Type="DB_CONTROLE_EVENTOSModel.USUARIOS" Role="USUARIOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_USUARIO">
+              <PropertyRef Name="TUCodigo" />
+            </Principal>
+            <Dependent Role="USUARIOS">
+              <PropertyRef Name="USCodTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_CONTROLE_EVENTOSModelStoreContainer" CdmEntityContainer="CONTROLE_EVENTOSEntities">
+          <EntitySetMapping Name="ALUNOS">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.ALUNOS">
+              <MappingFragment StoreEntitySet="ALUNOS">
+                <ScalarProperty Name="ALCodCurso" ColumnName="ALCodCurso" />
+                <ScalarProperty Name="ALMatricula" ColumnName="ALMatricula" />
+                <ScalarProperty Name="ALNome" ColumnName="ALNome" />
+                <ScalarProperty Name="ALCodigo" ColumnName="ALCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CURSOS">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.CURSOS">
+              <MappingFragment StoreEntitySet="CURSOS">
+                <ScalarProperty Name="CSCodUsuario" ColumnName="CSCodUsuario" />
+                <ScalarProperty Name="CSCodTipoCurso" ColumnName="CSCodTipoCurso" />
+                <ScalarProperty Name="CSCodEvento" ColumnName="CSCodEvento" />
+                <ScalarProperty Name="CSNome" ColumnName="CSNome" />
+                <ScalarProperty Name="CSCodigo" ColumnName="CSCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENTOS">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.EVENTOS">
+              <MappingFragment StoreEntitySet="EVENTOS">
+                <ScalarProperty Name="EVDescricao" ColumnName="EVDescricao" />
+                <ScalarProperty Name="EVCodigo" ColumnName="EVCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENTOS_CURSOS">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS">
+              <MappingFragment StoreEntitySet="EVENTOS_CURSOS">
+                <ScalarProperty Name="ECConfirmado" ColumnName="ECConfirmado" />
+                <ScalarProperty Name="ECCodAluno" ColumnName="ECCodAluno" />
+                <ScalarProperty Name="ECData" ColumnName="ECData" />
+                <ScalarProperty Name="ECCodCurso" ColumnName="ECCodCurso" />
+                <ScalarProperty Name="ECCodEvento" ColumnName="ECCodEvento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPO_CURSO">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.TIPO_CURSO">
+              <MappingFragment StoreEntitySet="TIPO_CURSO">
+                <ScalarProperty Name="TPDescricao" ColumnName="TPDescricao" />
+                <ScalarProperty Name="TPCodigo" ColumnName="TPCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPO_USUARIO">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.TIPO_USUARIO">
+              <MappingFragment StoreEntitySet="TIPO_USUARIO">
+                <ScalarProperty Name="TUDescricao" ColumnName="TUDescricao" />
+                <ScalarProperty Name="TUCodigo" ColumnName="TUCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TURMA">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.TURMA">
+              <MappingFragment StoreEntitySet="TURMA">
+                <ScalarProperty Name="TUAno" ColumnName="TUAno" />
+                <ScalarProperty Name="TUNumeroTurma" ColumnName="TUNumeroTurma" />
+                <ScalarProperty Name="TUCodCurso" ColumnName="TUCodCurso" />
+                <ScalarProperty Name="TUCodAluno" ColumnName="TUCodAluno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOS">
+            <EntityTypeMapping TypeName="DB_CONTROLE_EVENTOSModel.USUARIOS">
+              <MappingFragment StoreEntitySet="USUARIOS">
+                <ScalarProperty Name="USCodTipoUsuario" ColumnName="USCodTipoUsuario" />
+                <ScalarProperty Name="USNome" ColumnName="USNome" />
+                <ScalarProperty Name="USMatricula" ColumnName="USMatricula" />
+                <ScalarProperty Name="USCodigo" ColumnName="USCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

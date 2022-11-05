@@ -1,0 +1,81 @@
+﻿@model Controle_Eventos.CURSOS
+
+@{
+    ViewBag.Title = "Novo";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Novo Curso</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CSNome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CSNome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CSNome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CSCodEvento, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CSCodEvento, new SelectList(ViewBag.listaEvento, "EVCodigo", "EVDescricao"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CSCodEvento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CSCodTipoCurso, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CSCodTipoCurso, new SelectList(ViewBag.tipoCurso, "TPCodigo", "TPDescricao"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CSCodTipoCurso, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CSCodUsuario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CSCodUsuario, new SelectList(ViewBag.tipoUsuario, "TUCodigo", "TUDescricao"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CSCodUsuario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+<section>
+    @*const msgOK = "@ViewData["Mensagem"]";
+    const msgErro = "@ViewData["MensagemErro"]";*@
+</section>
+<section>
+    @*if (mensagemSucesso != "") {
+    Swal.fire("Sucesso", "Dados salvos com sucesso!", "success");
+    }
+    if (mensagemErro != "") {
+    Swal.fire({
+    icon: 'error',
+    title: "Ocorreu um erro!",
+    text: mensagemErro,
+
+    });
+    }*@
+</section>
+}

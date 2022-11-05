@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Controle_Eventos.EVENTOS>
+
+@{
+    ViewBag.Title = "Lista";
+}
+
+<h2>Lista</h2>
+
+<p>
+    @Html.ActionLink("Novo", "Novo")
+
+</p>
+<table  class="table table-sm table-striped tabela" id="DataTable" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EVDescricao)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EVDescricao)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Editar", new { id = item.EVCodigo }) |
+            <button class="btn-sm btn-danger fa fa-trash" title="Excluir" onclick="ConfirmaExclusao(@item.EVCodigo)"></button>
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts{
+    
+    <script>
+
+         function ConfirmaExclusao(EVCodigo) {
+    Swal.fire({
+    title: 'Tem certeza que deseja excluir?',
+    text: "Isso não poderá ser alterado!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sim, desejo excluir!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    location.href = "@Url.Action("Excluir", "Eventos")" + "?codEvento=" + EVCodigo;
+    }
+    })
+    }
+
+        $(document).ready(function () {
+            ConfiguraDataTable("#DataTable");
+        });
+
+    </script>
+    
+    }

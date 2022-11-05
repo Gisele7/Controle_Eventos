@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0ee3fa84ba7f403596677195c2a1be00" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.ALUNOS" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.CURSOS" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.EVENTOS" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.EVENTOS_CURSOS" Width="1.5" PointX="10.5" PointY="3.75" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.sysdiagrams" Width="1.5" PointX="3.75" PointY="7.875" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.TIPO_CURSO" Width="1.5" PointX="0.75" PointY="6.625" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.TIPO_USUARIO" Width="1.5" PointX="1.5" PointY="9.125" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.TURMA" Width="1.5" PointX="7.5" PointY="3.875" />
+        <EntityTypeShape EntityType="DB_CONTROLE_EVENTOSModel.USUARIOS" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_ALUNOS_CURSOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_ALUNOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_TURMA_ALUNOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_EVENTOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_TIPO_CURSO" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_CURSOS_USUARIOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_CURSOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_TURMA_CURSOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_EVENTOS_CURSOS_EVENTOS" />
+        <AssociationConnector Association="DB_CONTROLE_EVENTOSModel.FK_USUARIOS_TIPO_USUARIO" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
